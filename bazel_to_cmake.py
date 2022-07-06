@@ -50,6 +50,15 @@ class BuildFileFunctions(object):
             "\n  ".join(StripColons(kwargs["deps"]))
         )
 
+    def _add_target_include_directories(self, **kwargs):
+        for opt in kwargs.get("copts", []):
+            if opt.startswith("-I"):
+                string = "target_include_directories(%s PUBLIC %s)\n" % (
+                    kwargs["name"],
+                    opt[2:],
+                )
+                self._append_toplevel(string)
+
     def load(self, *args):
         pass
 
@@ -75,7 +84,14 @@ class BuildFileFunctions(object):
             self._add_deps(kwargs, " INTERFACE")
 
     def cc_binary(self, **kwargs):
-        pass
+        files = kwargs.get("srcs", []) + kwargs.get("hdrs", [])
+
+        string = "add_executable(%s\n  %s)\n" % (
+            kwargs["name"],
+            "\n  ".join(files)
+        )
+        self.converter.toplevel += string
+        self._add_target_include_directories(**kwargs)
 
     def cc_test(self, **kwargs):
         # Disable this until we properly support upb_proto_library().
