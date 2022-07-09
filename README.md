@@ -94,3 +94,11 @@ To translate idiomatically, we translate at a high level.  For
 example `cc_library()` translates directly to `add_library()` in
 CMake.  But we try to capture subtleties; for example a header-only
 library needs to have the "INTERFACE" attribute in CMake.
+
+## Testing
+
+To run all tests:
+
+```sh
+python3 -m unittest
+```
