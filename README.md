@@ -8,6 +8,8 @@ can do a CMake-based build.
 
 This is not an official Google product.
 
+[![PEP8](https://github.com/cmumford/bazel-to-cmake/actions/workflows/format.yaml/badge.svg)](https://github.com/cmumford/bazel-to-cmake/actions/workflows/format.yaml)
+
 ## Project Status: Experimental
 
 This project is experimental, and is only being used by a few projects
