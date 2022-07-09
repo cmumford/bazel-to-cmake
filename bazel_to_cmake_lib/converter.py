@@ -15,6 +15,25 @@
 
 import textwrap
 
+from .build_file_functions import BuildFileFunctions
+from .workspace_file_functions import WorkspaceFileFunctions
+
+
+def GetDict(obj):
+    ret = {}
+    for k in dir(obj):
+        if not k.startswith("_"):
+            ret[k] = getattr(obj, k)
+    return ret
+
+
+def execfile(filepath, globals_=None, locals_=None):
+    """A Python 3 equivalent to Python 2's execfile."""
+    with open(filepath) as f:
+        code = compile(f.read(), filepath, "exec")
+        exec(code, globals_, locals_)
+
+
 class Converter(object):
     def __init__(self):
         self.prelude = ""
@@ -91,3 +110,12 @@ class Converter(object):
     %(toplevel)s
 
   """)
+
+    def ConvertDir(self, cmake_out_file):
+        globs = GetDict(self)
+
+        execfile("WORKSPACE", GetDict(WorkspaceFileFunctions(self)))
+        execfile("BUILD", GetDict(BuildFileFunctions(self)))
+
+        with open(cmake_out_file, "w") as f:
+            f.write(self.convert())
