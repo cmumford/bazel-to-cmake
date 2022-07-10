@@ -112,8 +112,6 @@ class Converter(object):
   """)
 
     def ConvertDir(self, cmake_out_file):
-        globs = GetDict(self)
-
         execfile("WORKSPACE", GetDict(WorkspaceFileFunctions(self)))
         execfile("BUILD", GetDict(BuildFileFunctions(self)))
 
