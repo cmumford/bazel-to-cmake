@@ -53,8 +53,14 @@ class Converter(object):
         return t.render(prelude=self.prelude, toplevel=self.toplevel)
 
     def ConvertDir(self, cmake_out_file):
-        execfile("WORKSPACE", GetDict(WorkspaceFileFunctions(self)))
-        execfile("BUILD", GetDict(BuildFileFunctions(self)))
+        if os.path.exists("WORKSPACE.bazel"):
+            execfile("WORKSPACE.bazel", GetDict(WorkspaceFileFunctions(self)))
+        elif os.path.exists("WORKSPACE"):
+            execfile("WORKSPACE", GetDict(WorkspaceFileFunctions(self)))
+        if os.path.exists("BUILD.bazel"):
+            execfile("BUILD.bazel", GetDict(BuildFileFunctions(self)))
+        if os.path.exists("BUILD"):
+            execfile("BUILD", GetDict(BuildFileFunctions(self)))
 
         with open(cmake_out_file, "w") as f:
             f.write(self.convert())
