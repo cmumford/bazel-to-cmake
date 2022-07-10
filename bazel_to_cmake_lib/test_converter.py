@@ -28,7 +28,7 @@ class TestConverter(unittest.TestCase):
 
     cmake_project_file = 'CMakeLists.txt'
     cmake_build_dir = 'build_cmake'
-    project_names = ['hello1']
+    project_names = ['hello1', 'libsum']
 
     @staticmethod
     def GetAbsProjectDir(project_name):
@@ -100,6 +100,15 @@ class TestConverter(unittest.TestCase):
         abs_exe = os.path.join(
             abs_project_dir, TestConverter.cmake_build_dir, 'hello-world')
         subprocess.check_call([abs_exe])
+
+    def test_libsum(self):
+        project_dir = 'libsum'
+        TestConverter.ConvertAndBuild(project_dir)
+        # Execute the CMake built output to verify correctly built.
+        abs_project_dir = TestConverter.GetAbsProjectDir(project_dir)
+        abs_lib = os.path.join(
+            abs_project_dir, TestConverter.cmake_build_dir, 'libsum.a')
+        self.assertTrue(os.path.exists(abs_lib))
 
 
 if __name__ == '__main__':
