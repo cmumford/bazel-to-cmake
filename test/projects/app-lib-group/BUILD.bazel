@@ -1,0 +1,23 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+filegroup(
+    name = "library_sources",
+    srcs = ["sum.cc"],
+)
+
+filegroup(
+    name = "library_headers",
+    srcs = ["sum.h"],
+)
+
+cc_library(
+    name = "sum",
+    srcs = [":library_sources"],
+    hdrs = [":library_headers"],
+)
+
+cc_binary(
+    name = "dosum",
+    srcs = ["main.cc"],
+    deps = [":sum"],
+)
