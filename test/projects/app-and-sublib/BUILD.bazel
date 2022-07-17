@@ -1,0 +1,7 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+
+cc_binary(
+    name = "dosum",
+    srcs = ["main.cc"],
+    deps = ["//sublib:sum"],
+)
